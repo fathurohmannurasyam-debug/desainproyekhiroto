@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=”icon” href=”1.png”>
+    <title>Sistem Manajemen & Tracking Desain Proyek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #eff6ff;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #06b6d4;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 24px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-title h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 0.925rem;
+            margin-top: 4px;
+        }
+
+        /* Stats Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-info h3 {
+            font-size: 0.825rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .stat-info .stat-value {
+            font-size: 1.85rem;
+            font-weight: 700;
+            margin-top: 4px;
+            color: var(--text-main);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .stat-icon.total { background: #eff6ff; color: #3b82f6; }
+        .stat-icon.process { background: #fef3c7; color: #d97706; }
+        .stat-icon.revision { background: #fae8ff; color: #c026d3; }
+        .stat-icon.completed { background: #d1fae5; color: #059669; }
+
+        /* Content Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Form Card */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background-color: #fff;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        /* Controls Section (Search, Sort, Filter) */
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-card);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .search-box input {
+            padding-left: 38px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group select {
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            background: #fff;
+            color: var(--text-main);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .filter-group select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-sort-dir {
+            padding: 9px 12px;
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        .btn-sort-dir:hover {
+            background: #e2e8f0;
+        }
+
+        /* Table Container */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 14px 18px;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.775rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .badge-pending { background: #f3f4f6; color: #4b5563; }
+        .badge-process { background: #fef3c7; color: #b45309; }
+        .badge-revision { background: #fae8ff; color: #a21caf; }
+        .badge-completed { background: #d1fae5; color: #047857; }
+	.badge-biru { background: #d1dffa; color: #040778; }
+
+        .date-badge {
+            font-size: 0.825rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .deadline-highlight {
+            font-weight: 600;
+        }
+
+        .deadline-danger { color: var(--danger); }
+        .deadline-warning { color: var(--warning); }
+        .deadline-safe { color: var(--success); }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+        }
+
+        .btn-icon.edit { color: var(--primary); }
+        .btn-icon.edit:hover { background: var(--primary-light); border-color: var(--primary); }
+
+        .btn-icon.delete { color: var(--danger); }
+        .btn-icon.delete:hover { background: #fef2f2; border-color: var(--danger); }
+
+        /* Empty State */
+        .empty-state {
+            padding: 48px 20px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+
+        .empty-state p {
+            font-size: 0.95rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            body { padding: 12px; }
+            .controls-bar { flex-direction: column; align-items: stretch; }
+            .filter-group { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-title">
+                <h1><i class="fa-solid fa-layer-group" style="color: var(--primary);"></i> Sistem Management Desain & Proyek </h1>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Desain & Proyek</h3>
+                    <div class="stat-value" id="statTotal">0</div>
+                </div>
+                <div class="stat-icon total"><i class="fa-solid fa-folder-open"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Dalam Proses</h3>
+                    <div class="stat-value" id="statProcess">0</div>
+                </div>
+                <div class="stat-icon process"><i class="fa-solid fa-spinner"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Dalam Revisi</h3>
+                    <div class="stat-value" id="statRevision">0</div>
+                </div>
+                <div class="stat-icon revision"><i class="fa-solid fa-pen-ruler"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Selesai</h3>
+                    <div class="stat-value" id="statCompleted">0</div>
+                </div>
+                <div class="stat-icon completed"><i class="fa-solid fa-circle-check"></i></div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Form Input / Edit -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 id="formTitle"><i class="fa-solid fa-plus-circle"></i> Tambah Desain Baru</h2>
+                </div>
+                <div class="card-body">
+                    <form id="designForm">
+                        <input type="hidden" id="editId">
+                        
+                        <div class="form-group">
+                            <label for="projectName"><i class="fa-solid fa-building"></i> Nama Proyek</label>
+                            <input type="text" id="projectName" class="form-control" placeholder="Contoh: Perumahan Graha Cahaya" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="designName"><i class="fa-solid fa-palette"></i> Nama Proyek / Tipe Desain</label>
+                            <input type="text" id="designName" class="form-control" placeholder="Contoh: Visualisasi 3D Fasad Type 45" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="requestDate"><i class="fa-regular fa-calendar-check"></i> Tanggal Permintaan</label>
+                            <input type="date" id="requestDate" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="deadlineDate"><i class="fa-regular fa-calendar-xmark"></i> Tanggal Deadline</label>
+                            <input type="date" id="deadlineDate" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status"><i class="fa-solid fa-list-check"></i> Status Pengerjaan</label>
+                            <select id="status" class="form-control" required>
+	`			<option value="In">In</option>
+				<option value="Out">Out Selesai</option>
+                                <option value="Belum Dimulai">Belum Dimulai</option>
+                                <option value="Dalam Proses" selected>Dalam Proses</option>
+                                <option value="Revisi">Revisi</option>
+                                <option value="Selesai">Selesai</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary">
+                                <i class="fa-solid fa-floppy-disk"></i> Simpan Data
+                            </button>
+                            <button type="button" id="btnCancel" class="btn btn-secondary" style="display: none;" onclick="resetForm()">
+                                Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Table & Controls Section -->
+            <div>
+                <!-- Sort & Filter Bar -->
+                <div class="controls-bar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Cari nama proyek atau desain..." oninput="renderTable()">
+                    </div>
+
+                    <div class="filter-group">
+                        <select id="filterStatus" onchange="renderTable()">
+                            <option value="ALL">Semua Status</option>
+                            <option value="Belum Dimulai">Belum Dimulai</option>
+                            <option value="Dalam Proses">Dalam Proses</option>
+                            <option value="Revisi">Revisi</option>
+                            <option value="Selesai">Selesai</option>
+                        </select>
+
+                        <select id="sortBy" onchange="renderTable()">
+                            <option value="deadline">Sortir: Deadline</option>
+                            <option value="request">Sortir: Tgl Permintaan</option>
+                            <option value="project">Sortir: Nama Proyek</option>
+                            <option value="status">Sortir: Status</option>
+                        </select>
+
+                        <button class="btn-sort-dir" id="btnSortDir" onclick="toggleSortDirection()" title="Ubah Arah Sortir">
+                            <i class="fa-solid fa-arrow-down-short-wide" id="sortIcon"></i>
+                        </button>
+
+			
+	
+                    </div>
+                </div>
+
+                <!-- Table Data -->
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th>Informasi Desain & Proyek</th>
+                                <th>Tgl Permintaan</th>
+                                <th>Deadline & Est. Hari</th>
+                                <th>Status</th>
+                                <th style="width: 90px; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="designTableBody">
+                            <!-- Data rows populated dynamically -->
+                        </tbody>
+                    </table>
+                    <div id="emptyState" class="empty-state" style="display: none;">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <p>Tidak ada data desain yang ditemukan.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initial Data Store Key
+        const STORAGE_KEY = 'DESIGN_PROJECTS_DATA_V1';
+
+        // State Variables
+        let designs = [];
+        let sortAscending = true;
+
+        // Default Sample Data if LocalStorage is empty
+        const sampleData = [
+            {
+                id: '1',
+                projectName: 'Graha Cahaya Asri Cluster A',
+                designName: '3D Visual Render Fasad Type 36 & Floor Plan',
+                requestDate: '2026-03-01',
+                deadlineDate: '2026-03-10',
+                status: 'Selesai'
+            },
+            {
+                id: '2',
+                projectName: 'Grand Residence Phase 2',
+                designName: 'Desain Banner Promosi "April Penuh Kejutan"',
+                requestDate: '2026-03-05',
+                deadlineDate: '2026-03-25',
+                status: 'Dalam Proses'
+            },
+            {
+                id: '3',
+                projectName: 'Kawasan Industri Green Valley',
+                designName: 'Site Plan Masterplan & Modern Signage',
+                requestDate: '2026-03-08',
+                deadlineDate: '2026-03-18',
+                status: 'Revisi'
+            },
+            {
+                id: '4',
+                projectName: 'Townhouse Cahaya Villa',
+                designName: 'Interior Render Living Room & Marble Accent',
+                requestDate: '2026-03-12',
+                deadlineDate: '2026-04-02',
+                status: 'Belum Dimulai'
+            }
+        ];
+
+        // Load Initial Data
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    designs = JSON.parse(stored);
+                } catch (e) {
+                    designs = [...sampleData];
+                }
+            } else {
+                designs = [...sampleData];
+                saveData();
+            }
+        }
+
+        // Save Data to LocalStorage
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(designs));
+        }
+
+        // Format Date to Indonesian format (e.g., 05 Mar 2026)
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            if (isNaN(date)) return dateStr;
+            return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // Calculate Days Remaining
+        function getDaysRemaining(deadlineStr) {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const deadline = new Date(deadlineStr);
+            deadline.setHours(0,0,0,0);
+
+            const diffTime = deadline - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // Render Status Badge
+        function getStatusBadge(status) {
+            switch(status) {
+		case 'In':
+                    return `<span class="badge badge-completed"><i class="fa-solid fa-circle-check"></i> In</span>`;
+		case 'Out':
+                    return `<span class="badge badge-biru"><i class="fa-solid fa-circle-check"></i> Out Selesai</span>`;
+                case 'Belum Dimulai':
+                    return `<span class="badge badge-pending"><i class="fa-regular fa-clock"></i> Belum Dimulai</span>`;
+                case 'Dalam Proses':
+                    return `<span class="badge badge-process"><i class="fa-solid fa-spinner fa-spin-pulse"></i> Dalam Proses</span>`;
+                case 'Revisi':
+                    return `<span class="badge badge-revision"><i class="fa-solid fa-pen-nib"></i> Revisi</span>`;
+                case 'Selesai':
+                    return `<span class="badge badge-completed"><i class="fa-solid fa-circle-check"></i> Selesai</span>`;
+                default:
+                    return `<span class="badge">${status}</span>`;
+            }
+        }
+
+        // Render Stats Summary Cards
+        function updateStats() {
+            document.getElementById('statTotal').innerText = designs.length;
+            document.getElementById('statProcess').innerText = designs.filter(d => d.status === 'Dalam Proses').length;
+            document.getElementById('statRevision').innerText = designs.filter(d => d.status === 'Revisi').length;
+            document.getElementById('statCompleted').innerText = designs.filter(d => d.status === 'Selesai').length;
+        }
+
+        // Toggle Sort Direction Ascending / Descending
+        function toggleSortDirection() {
+            sortAscending = !sortAscending;
+            const icon = document.getElementById('sortIcon');
+            if (sortAscending) {
+                icon.className = 'fa-solid fa-arrow-down-short-wide';
+            } else {
+                icon.className = 'fa-solid fa-arrow-up-wide-short';
+            }
+            renderTable();
+        }
+
+        // Form Submit Handler (Create & Update)
+        document.getElementById('designForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const editId = document.getElementById('editId').value;
+            const projectName = document.getElementById('projectName').value.trim();
+            const designName = document.getElementById('designName').value.trim();
+            const requestDate = document.getElementById('requestDate').value;
+            const deadlineDate = document.getElementById('deadlineDate').value;
+            const status = document.getElementById('status').value;
+
+            if (editId) {
+                // Update Existing
+                const index = designs.findIndex(d => d.id === editId);
+                if (index !== -1) {
+                    designs[index] = {
+                        ...designs[index],
+                        projectName,
+                        designName,
+                        requestDate,
+                        deadlineDate,
+                        status
+                    };
+                }
+            } else {
+                // Create New
+                const newDesign = {
+                    id: Date.now().toString(),
+                    projectName,
+                    designName,
+                    requestDate,
+                    deadlineDate,
+                    status
+                };
+                designs.unshift(newDesign);
+            }
+
+            saveData();
+            resetForm();
+            renderTable();
+        });
+
+        // Edit Item
+        function editDesign(id) {
+            const item = designs.find(d => d.id === id);
+            if (!item) return;
+
+            document.getElementById('editId').value = item.id;
+            document.getElementById('projectName').value = item.projectName;
+            document.getElementById('designName').value = item.designName;
+            document.getElementById('requestDate').value = item.requestDate;
+            document.getElementById('deadlineDate').value = item.deadlineDate;
+            document.getElementById('status').value = item.status;
+
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Data Desain';
+            document.getElementById('btnSubmit').innerHTML = '<i class="fa-solid fa-check"></i> Simpan Perubahan';
+            document.getElementById('btnCancel').style.display = 'inline-flex';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Reset Form
+        function resetForm() {
+            document.getElementById('editId').value = '';
+            document.getElementById('designForm').reset();
+            document.getElementById('formTitle').innerHTML = '<i class="fa-solid fa-plus-circle"></i> Tambah Desain Baru';
+            document.getElementById('btnSubmit').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Simpan Data';
+            document.getElementById('btnCancel').style.display = 'none';
+        }
+
+        // Delete Item
+        function deleteDesign(id) {
+            const item = designs.find(d => d.id === id);
+            if (!item) return;
+
+            if (confirm(`Apakah Anda yakin ingin menghapus data desain "${item.designName}" dari proyek "${item.projectName}"?`)) {
+                designs = designs.filter(d => d.id !== id);
+                saveData();
+                renderTable();
+                if (document.getElementById('editId').value === id) {
+                    resetForm();
+                }
+            }
+        }
+
+        // Main Render & Sort Function
+        function renderTable() {
+            const tbody = document.getElementById('designTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const searchKeyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            const selectedStatus = document.getElementById('filterStatus').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            // 1. Filtering
+            let filtered = designs.filter(item => {
+                const matchSearch = item.projectName.toLowerCase().includes(searchKeyword) || 
+                                    item.designName.toLowerCase().includes(searchKeyword);
+                const matchStatus = (selectedStatus === 'ALL') || (item.status === selectedStatus);
+                return matchSearch && matchStatus;
+            });
+
+            // 2. Sorting Logic
+            filtered.sort((a, b) => {
+                let valA, valB;
+
+                if (sortBy === 'deadline') {
+                    valA = new Date(a.deadlineDate).getTime();
+                    valB = new Date(b.deadlineDate).getTime();
+                } else if (sortBy === 'request') {
+                    valA = new Date(a.requestDate).getTime();
+                    valB = new Date(b.requestDate).getTime();
+                } else if (sortBy === 'project') {
+                    valA = a.projectName.toLowerCase();
+                    valB = b.projectName.toLowerCase();
+                } else if (sortBy === 'status') {
+                    valA = a.status;
+                    valB = b.status;
+                }
+
+                if (valA < valB) return sortAscending ? -1 : 1;
+                if (valA > valB) return sortAscending ? 1 : -1;
+                return 0;
+            });
+
+            // 3. Render Table HTML
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+
+                filtered.forEach((item, idx) => {
+                    const daysRemaining = getDaysRemaining(item.deadlineDate);
+                    let daysLabel = '';
+                    let daysClass = 'deadline-safe';
+
+                    if (item.status === 'Selesai') {
+                        daysLabel = '<span style="color:#10b981; font-size:0.8rem;"><i class="fa-solid fa-check"></i> Selesai</span>';
+                    } else if (daysRemaining < 0) {
+                        daysLabel = `<span class="deadline-highlight deadline-danger">Lewat ${Math.abs(daysRemaining)} hari!</span>`;
+                    } else if (daysRemaining === 0) {
+                        daysLabel = `<span class="deadline-highlight deadline-warning">Hari ini!</span>`;
+                    } else if (daysRemaining <= 3) {
+                        daysLabel = `<span class="deadline-highlight deadline-warning">${daysRemaining} hari lagi</span>`;
+                    } else {
+                        daysLabel = `<span class="deadline-highlight deadline-safe">${daysRemaining} hari lagi</span>`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="font-weight: 600; color: var(--text-muted);">${idx + 1}</td>
+                        <td>
+                            <div style="font-weight: 700; color: var(--text-main); font-size: 0.95rem;">${escapeHtml(item.designName)}</div>
+                            <div style="color: var(--text-muted); font-size: 0.825rem; margin-top: 2px;">
+                                <i class="fa-solid fa-building" style="margin-right: 4px; opacity:0.7;"></i>${escapeHtml(item.projectName)}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="date-badge">
+                                <i class="fa-regular fa-calendar"></i> ${formatDate(item.requestDate)}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="date-badge">
+                                <i class="fa-regular fa-calendar-dot"></i> ${formatDate(item.deadlineDate)}
+                            </div>
+                            <div style="margin-top: 2px;">${daysLabel}</div>
+                        </td>
+                        <td>
+                            ${getStatusBadge(item.status)}
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-icon edit" onclick="editDesign('${item.id}')" title="Edit Data">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button class="btn-icon delete" onclick="deleteDesign('${item.id}')" title="Hapus Data">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            // Update Header Stats
+            updateStats();
+        }
+
+        // Helper to escape HTML characters
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.innerText = text;
+            return div.innerHTML;
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            // Set default date input values (today for request)
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('requestDate').value = todayStr;
+            
+            // Set default deadline (+7 days)
+            const nextWeek = new Date();
+            nextWeek.setDate(nextWeek.getDate() + 7);
+            document.getElementById('deadlineDate').value = nextWeek.toISOString().split('T')[0];
+
+            renderTable();
+        });
+	
+
+
+
+
+    </script>
+</body>
+</html>
